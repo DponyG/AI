@@ -2,22 +2,19 @@ import math
 
 class Node:
 
-    def __init__(self):
+    def __init__(self, number):
        ## self.state = state
         self.children = []
-        self.pile = [7]
+        self.pile = [number]
         self.miniMax = 0
         self.depth = 0
         self.parent = None
 
-    def addChild(self, obj): 
-        self.children.append(obj)
-    
-    def printChildren(self, node):
-        print(node.pile)
-    
     def getChildren(self):
         return self.children
+
+    def printChildren(self):
+        print(self.pile)
       
 class Tree:  
     def __init__(self, node):
@@ -48,7 +45,8 @@ class Tree:
         if self.isLeafNode(node):
             for node in node.children:
                 self.generateBranches(node)
-                node.printChildren(node)
+                print(node.printChildren())
+               ## node.printChildren(node)
                 self.generateTree(node)
         else:
             if(node.depth % 2 == 1): 
