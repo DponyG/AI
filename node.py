@@ -1,25 +1,24 @@
+import math
+
 class Node:
+
     def __init__(self):
        ## self.state = state
         self.children = []
         self.pile = [7]
-        self.minimax = 0 
-        self.debth = 0 
+        self.miniMax = 0
+        self.depth = 0
         self.parent = None
 
     def addChild(self, obj): 
         self.children.append(obj)
     
-    @property
-    def setPile(pile):
-        self.pile = pile
-
     def printChildren(self, node):
         print(node.pile)
-        print(node.debth)
     
-       
-
+    def getChildren(self):
+        return self.children
+      
 class Tree:  
     def __init__(self, node):
         self.treeDebth = 0
@@ -35,7 +34,7 @@ class Tree:
                 if checkNum != number:
                     newNode = Node()
                     newNode.parent = node
-                    newNode.debth = node.debth + 1
+                    newNode.depth = node.depth + 1
                     newPile.remove(number)
                     newPile.append(newNum)
                     newPile.append(i)
@@ -51,7 +50,13 @@ class Tree:
                 self.generateBranches(node)
                 node.printChildren(node)
                 self.generateTree(node)
-           
+        else:
+            if(node.depth % 2 == 1): 
+                node.miniMax = 0    
+            else:
+                node.miniMax = 1
+
+                   
     def isLeafNode(self, node):
         for number in node.pile:
             if number > 2:
@@ -64,42 +69,36 @@ class Tree:
         if root.children == []:
             return 1
         return 1 + max(self.depth(child) for child in root.children)
-       
-    
-            
-                 
-       
 
+    def miniMax(self, root, depth):
+        if depth == 0:
+            return root.miniMax
+        if depth%2 ==1: ##Max's turn
+            maxEval = 0
+            for node in root.children:       
+                    eval = self.miniMax(node, depth -1)
+                    maxEval = max(eval, maxEval)
+            root.miniMax = maxEval             
+            return maxEval    
+        else:
+            minEval = 1 
+            for node in root.children:
+                eval = self.miniMax(node, depth -1)
+                minEval = min(eval, minEval)
+            root.miniMax = minEval
+            return minEval
+
+    def printMiniMax(self, root):
+        for node in root.children:
+            print(minimax)
+
+    def printTree(self, root):
+        if self.isLeafNode(root):
+            print(root.pile)
+            print(root.miniMax)
+        for node in root.children:
+            print(node.pile)
+            print(node.miniMax)
+            self.printTree(node)
+        
       
-           
-        
-
-        
-    
-  
-            
-
-        
-
-        
-        
-    
-
-
-        
-            
-
-
-    
-                
-
-   
-
-
-
-
-                    
-        
-
-
-
