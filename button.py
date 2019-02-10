@@ -1,15 +1,25 @@
 import pygame
 
 class Button:
+  
+    active = True
+  
     def __init__(self, color, x,y,width,height, text=''): 
         self.color = color 
         self.x = x 
         self.y = y 
         self.width = width 
         self.height = height 
-        self.text = text 
-        self.active = True
-    
+        self.text = text
+        self.textColor = None
+
+    def setColor(self, color):
+        self.color = color
+
+    def setText(self, text):
+        self.text = text
+
+
     def draw(self,win,outline=None):
         if outline:
             pygame.draw.rect(win, outline, (self.x-2,self.y-2,self.width+4,self.height+4),0)
@@ -27,11 +37,17 @@ class Button:
                 return True 
         return False
 
-    def setActive():
-        self.active = False
     
-    @property
+
+
+    @staticmethod
+    def setActive(status):
+        Button.active = status
+
+    @staticmethod
     def isActive():
-        return self.active
+        return Button.active
+        
+        
         
         

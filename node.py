@@ -2,10 +2,10 @@ import math
 
 class Node:
 
-    def __init__(self, number):
+    def __init__(self):
        ## self.state = state
         self.children = []
-        self.pile = [number]
+        self.pile = []
         self.miniMax = 0
         self.depth = 0
         self.parent = None
@@ -15,6 +15,12 @@ class Node:
 
     def printChildren(self):
         print(self.pile)
+    
+    #only used for continuing the game
+    def setPile(self, number):
+        self.pile = [number]
+        
+    
       
 class Tree:  
     def __init__(self, node):
@@ -42,11 +48,9 @@ class Tree:
         if len(node.pile) == 1:
             self.generateBranches(node)
             self.treeDebth += 1
-        if self.isLeafNode(node):
+        if not self.isLeafNode(node):
             for node in node.children:
                 self.generateBranches(node)
-                print(node.printChildren())
-               ## node.printChildren(node)
                 self.generateTree(node)
         else:
             if(node.depth % 2 == 1): 
@@ -58,8 +62,8 @@ class Tree:
     def isLeafNode(self, node):
         for number in node.pile:
             if number > 2:
-                return True       
-        return False
+                return False       
+        return True
   
     def depth(self, root):  
         if root is None:
