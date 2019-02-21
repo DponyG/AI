@@ -1,9 +1,14 @@
 import math
 
+
+#  file: node.py
+#  Author: Samuel Grenon
+#  Class: Node, Tree
+#  Generates the minimax of all possible moves
+
 class Node:
 
     def __init__(self):
-       ## self.state = state
         self.children = []
         self.pile = []
         self.miniMax = 0
@@ -26,7 +31,13 @@ class Tree:
     def __init__(self, node):
         self.treeDebth = 0
         self.generateTree(node)
-      
+    
+    #def GenerateBranches()
+    #Called recursivley from generateTree.
+    #Takes the old pile and splits it up into a new pile
+    #Count goes to number/2 to prevent recreating nodes
+    #for example it prevents 4 splitting into 1 3 and 3 1
+
     def generateBranches(self, node):  
         for number in node.pile:
             count = int(number/2)
@@ -43,7 +54,12 @@ class Tree:
                     newPile.append(i)
                     newNode.pile = newPile.copy()
                     node.children.append(newNode)
-          
+
+    #def GenerateTree(self, node)
+    # Recursive Function. Base Case if its a lead node.
+    # If base case add the approptiate minimax 0 = loss
+    # for max 1 = loss for min.
+     
     def generateTree(self, node):   
         if len(node.pile) == 1:
             self.generateBranches(node)
@@ -54,9 +70,10 @@ class Tree:
                 self.generateTree(node)
         else:
             if(node.depth % 2 == 1): 
-                node.miniMax = 0    
+                node.miniMax = 0
             else:
                 node.miniMax = 1
+                
 
                    
     def isLeafNode(self, node):
@@ -65,42 +82,53 @@ class Tree:
                 return False       
         return True
   
+    #def GenerateTree()
+    #Recursive function required to calculate
+    #the depth of the tree. Needed for minimax
     def depth(self, root):  
         if root is None:
             return 0
         if root.children == []:
-            return 1
+            return 0
         return 1 + max(self.depth(child) for child in root.children)
 
+    # def miniMax(self, root, depth)
+    # Recursive MiniMax function that cycles
+    # up from a leaf node. Alternating between min
+    # and max based on the depth of tree 
     def miniMax(self, root, depth):
         if depth == 0:
+            for node in root.children:
+                if node.miniMax < root.miniMax:
+                    root.miniMax = node.miniMax
             return root.miniMax
-        if depth%2 ==1: ##Max's turn
+        if depth%2 == 1: ##Max's turn
             maxEval = 0
             for node in root.children:       
                     eval = self.miniMax(node, depth -1)
-                    maxEval = max(eval, maxEval)
-            root.miniMax = maxEval             
-            return maxEval    
+                    root.miniMax = max(eval, maxEval)  
+            print(root.pile , root.miniMax )        
+            return root.miniMax    
         else:
             minEval = 1 
             for node in root.children:
                 eval = self.miniMax(node, depth -1)
-                minEval = min(eval, minEval)
-            root.miniMax = minEval
-            return minEval
+                root.miniMax = min(eval, minEval)
+            print(root.pile , root.miniMax )   
+            return root.miniMax
 
-    def printMiniMax(self, root):
-        for node in root.children:
-            print(minimax)
+    # def printMiniMax(self, root):
+    #     if not self.isLeafNode:
+    #         for node in root.children:
+    #             print("here")
+    #             print(node.pile)
+    #             print(node.minimax)
+    #             self.printMiniMax(node)
+            
+        
 
-    def printTree(self, root):
-        if self.isLeafNode(root):
-            print(root.pile)
-            print(root.miniMax)
-        for node in root.children:
-            print(node.pile)
-            print(node.miniMax)
-            self.printTree(node)
+    
+
+
         
       

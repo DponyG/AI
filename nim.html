@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+
+<body>
+    <h1>Nim's Game</h1>
+    <h4>Rules</h4>
+    <p>Given a starting number two players each take turns splitting it into different piles. You may only  split once per turn.
+        You made not split a stack into equal groups. For example if the pile was 4 -  3 - 1. You could not split the 4 to
+        a 2 - 2. The player who can not split has lost the game. Min  goes first.</p>
+    <h4>How to use </h4>
+    <p>When you run the program a poorly made GUI will appear with the current number of games  MIN and MAX has won. I have
+        also started the pile with 3. Simply click the Start button and a  game will play itself and spit out the results
+        in the console. The score will be updated in the GUI  and the pile will increase by 1. Click the button again to
+        play at 4 </p>
+    <h4>Implementation: </h4>
+    <p>I implemented a Minimax AI with 1 being a win for the MAX player, and 0 being a win for the MIN  player. A tree that
+        starts at 7 would look something like this. Each player will only take a node  that leads them to a win. If no nodes
+        lead them to a win then they pick a random node. If more  nodes lead them to a node they pick the first one. </p>
+    <img src="https://i.stack.imgur.com/jDrYo.png" alt="Nim Game Board">
+    <h4>Optimization</h4>
+    <p>Optimization  The ability to create the tree and populate the correct minimax for each node becomes  extremely slow at
+        a counter of about 12-15. I believe the reason for this is because 6-1 and 5-2  can split into 4 - 2 -1, however,
+        the way I have created my tree each one would contain a 4 - 2 -1  child node. So an optimization I could do in the
+        future would have each parent point to the same  child node, as long as they were on the same depth. I believe this
+        would speed up the time it  takes to generate a tree, and perform a minimax</p>
+</body>
+
+</html>

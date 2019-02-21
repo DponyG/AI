@@ -1,8 +1,13 @@
 import pygame
 
+#  file: Button.py
+#  Author: Samuel Grenon
+#  Class: Button
+#  Handles the Buttons in Pygame
+
 class Button:
   
-    active = True
+    active = True #Static Variable to disable the button. Dosen't really work as intended
   
     def __init__(self, color, x,y,width,height, text=''): 
         self.color = color 
@@ -38,8 +43,6 @@ class Button:
         return False
 
     
-
-
     @staticmethod
     def setActive(status):
         Button.active = status

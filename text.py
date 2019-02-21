@@ -1,7 +1,12 @@
 import pygame
 
+#  file: text.py
+#  Author: Samuel Grenon
+#  Class: Text
+#  Handles the Text in pygame
+
 class Text:
-    maxScore = 0
+    maxScore = 0 # Static Variable used to increment the score
     minScore = 0
     num = 3
     def __init__(self):

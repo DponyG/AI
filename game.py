@@ -4,16 +4,17 @@ from text import Text
 from button import Button
 import random
 
+#  file: game.py
+#  Author: Samuel Grenon
+#  Class: Game
+#  Handles some Game Logic. Min goes first
+#  and will chose the first 0 if there is no
+#  0 available it will chose a random viable node.
+#  max is the same way, however will choose a 1 if possble.
+
 class Game:
     def __init__(self, number):
-        # self.text = Text()
-        # self.root = Node()
-        # self.tree = Tree(self.root)
-        # self.depth = self.tree.depth(self.root)
-        # self.tree.miniMax(self.root, self.depth) ## Give all nodes 0 or 1
-        # self.moveStorage = []
-        # self.getMoveList(self.root, False)
-        button = Button((0,255,0), 150, 200, 100, 50, 'Start') # set buttons status to true when we hit a leaf node
+      
         self.text = Text()
         self.pileNumber = number
         self.text = None
@@ -28,10 +29,12 @@ class Game:
         self.root = Node()
         self.root.setPile(number)
         self.tree = Tree(self.root)
+        print("Dont Generating Tree")
         self.depth = self.tree.depth(self.root)
         self.tree.miniMax(self.root, self.depth) ## Give all nodes 0 or 1
         self.moveStorage = []
         self.getMoveList(self.root, False)
+    
 
 
     def getMoveList(self, node, maximizingPlayer):
