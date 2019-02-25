@@ -9,7 +9,7 @@ class Button:
   
     active = True #Static Variable to disable the button. Dosen't really work as intended
   
-    def __init__(self, color, x,y,width,height, text=''): 
+    def __init__(self, color, x,y,width,height, text='', node = None): 
         self.color = color 
         self.x = x 
         self.y = y 
@@ -17,6 +17,7 @@ class Button:
         self.height = height 
         self.text = text
         self.textColor = None
+        self.node = node
 
     def setColor(self, color):
         self.color = color
@@ -32,7 +33,7 @@ class Button:
             pygame.draw.rect(win, self.color, (self.x,self.y,self.width,self.height),0)
             
         if self.text != '': 
-            font = pygame.font.SysFont('comicsans', 60) 
+            font = pygame.font.SysFont('comicsans', 15) 
             text = font.render(self.text, 1, (0,0,0)) 
             win.blit(text, (self.x + (self.width/2 - text.get_width()/2),self.y + (self.height/2 - text.get_height()/2)))
     
@@ -41,6 +42,12 @@ class Button:
             if pos[1] > self.y and pos[1] < self.y + self.height: 
                 return True 
         return False
+    
+    def getNode(self):
+        return self.node
+
+    def printTest(self):
+        print(self.node.pile)
 
     
     @staticmethod

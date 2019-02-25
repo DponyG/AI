@@ -2,6 +2,7 @@ from node import Node
 from node import Tree
 from text import Text
 from button import Button
+from gameBoard import GameBoard
 import random
 
 #  file: game.py
@@ -13,30 +14,71 @@ import random
 #  max is the same way, however will choose a 1 if possble.
 
 class Game:
-    def __init__(self, number):
+    def __init__(self, number, width, height):
       
         self.text = Text()
         self.pileNumber = number
+        self.width = width
+        self.height = height
         self.text = None
         self.root = None
         self.tree = None
+        self.currentMove = None
         self.moveStorage = None
+        self.gameBoard = None
+        self.possibleMoves = None
         self.startGame(self.pileNumber)
+   
         
-    
     def startGame(self, number):
         print("Starting new Game with one higher number")
         self.root = Node()
         self.root.setPile(number)
         self.tree = Tree(self.root)
-        print("Dont Generating Tree")
+        print("Done Generating Tree")
+        #print(self.tree.printChildren(self.root))
         self.depth = self.tree.depth(self.root)
         self.tree.miniMax(self.root, self.depth) ## Give all nodes 0 or 1
         self.moveStorage = []
-        self.getMoveList(self.root, False)
+        self.gameBoard = GameBoard(self.width, self.height)
+        self.playerVsAiMoveList(self.root)
+        
+    def playerVsAiMoveList(self, node):
+        self.currentMove = node
+        self.changePileText(node)
+        self.possibleMoves = self.gameBoard.createButtonMoves(self.currentMove) ##Creates the moves
     
-
-
+    def playerThink(self, node):
+        self.currentMove = node
+        if self.tree.isLeafNode(self.currentMove):
+            print("You have Won with the ending pile :" + str(self.currentMove.pile))
+            Text.playerStatic()
+            Text.incNum()
+            self.playerVsAiMoveList(self.currentMove)
+        else:
+            print(self.currentMove.pile)
+            self.playerVsAiMoveList(self.currentMove)
+            self.computerThink(self.currentMove)
+        
+    
+    #For Player vs Ai MiniMax
+    def computerThink(self,node):
+       # print(self.currentMove.pile)
+        self.currentMove = self.setMove(node, True)
+        if self.tree.isLeafNode(self.currentMove):
+            print("The computer has Won with the ending pile :" + str(self.currentMove.pile))
+            Text.computerStatic()
+            Text.incNum()
+            self.playerVsAiMoveList(self.currentMove)
+        else:
+            print(self.currentMove.pile)
+            self.playerVsAiMoveList(self.currentMove)
+    
+    def changePileText(self, node):
+        Text.changeGamePile(node.pile)
+        
+    #Will be used for Ai vs Ai for when the mode selected is minimax
+    #currently not used.
     def getMoveList(self, node, maximizingPlayer):
         self.moveStorage.append(node.pile)
         if self.tree.isLeafNode(node):
@@ -63,6 +105,7 @@ class Game:
         else:
              node = self.setMove(node, maximizingPlayer)
              self.getMoveList(node, True)
+             
 
     def setMove(self, node, maximizingPlayer):
         allMoves = node.getChildren()
@@ -75,13 +118,15 @@ class Game:
             for node in allMoves:
                 if node.miniMax == 0:
                     return node
-                return random.choice (allMoves)     
+            return random.choice (allMoves)     
+
+    def getMoves (self):
+        return self.possibleMoves
 
     def printStorage(self):
         for move in self.moveStorage:
             print(move)
 
-    
 
 
 
