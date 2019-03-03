@@ -1,25 +1,27 @@
 from button import Button
 
 class GameBoard:
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
-        self.placementWidth = width*.75
-        self.placementHeight = height*.15
-        self.count = 0
+    def __init__(self):
+        self.width = 768
+        self.height = 1024
+        self.placementWidth = self.width*.50
+        self.placementHeight = self.height*.05
+      
   
     def createButtonMoves(self, node):
         xVal = 0
         yVal = 0
+        count = 0
         buttonArray = []
-        self.count = 0
-        if len(node.children) == 0:
-            print("empty list")
         for children in node.children:
-            print(children.pile, node.pile, "game")
-            button = Button((255,140,0), self.placementWidth, self.placementHeight + yVal, 100, 50, str(children.pile), children)  
-            yVal += 50   
+            if  count == 8:
+                xVal += 265
+                yVal = 0
+                count = 0
+            button = Button((255,140,0), self.placementWidth+xVal, self.placementHeight + yVal, 260, 50, str(children.pile), children)  
+            yVal += 55  
             buttonArray.append(button)
+            count +=1
         return buttonArray
 
     # def getMoves(self):

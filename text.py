@@ -6,8 +6,8 @@ import pygame
 #  Handles the Text in pygame
 
 class Text:
-    playerScore = 0 # Static Variable used to increment the score
-    computerScore = 0
+    agentOneScore = 0 # Static Variable used to increment the score
+    agentTwoScore = 0
     num = 5
     pile = []
     previousPile = []
@@ -16,28 +16,32 @@ class Text:
         self.green = [0,128,0]
         self.purple = [128,0,128]
         self.font = pygame.font.SysFont('comicsans', 30)
-        self.player = self.font.render("Player", True, self.black)
-        self.computer= self.font.render("Computer", True, self.black)
+        self.agentOne = self.font.render("Agent 1", True, self.black)
+        self.agentTwo= self.font.render("Agent 2", True, self.black)
         self.allPossibleMoves= self.font.render("All Possible Moves :", True, self.black)
        
 
+    def setAgents(self, type1, type2):
+        self.agentOne = self.font.render(type1, True, self.black)
+        self.agentTwo = self.font.render(type2, True, self.black)
+    
     
     def drawPlayerText(self, window):
-        window.blit(self.player,( 25, 50 ))
-        window.blit(self.computer,( 25, 100))
+        window.blit(self.agentOne,( 25, 50 ))
+        window.blit(self.agentTwo,( 25, 100))
     
     def drawAllMoves(self,window):
         window.blit(self.allPossibleMoves,(500,125))
 
     def drawPlayerScore(self,window):
-        maxPlayerScore = self.font.render(str(Text.playerScore), True, self.green)
-        minPlayerScore = self.font.render(str(Text.computerScore), True, self.green)
+        maxPlayerScore = self.font.render(str(Text.agentOneScore), True, self.green)
+        minPlayerScore = self.font.render(str(Text.agentTwoScore), True, self.green)
         window.blit(maxPlayerScore,(250,50))
         window.blit(minPlayerScore,(250,100))
     
     
     def drawNumber(self,window):
-        pileStr = "Current number : "
+        pileStr = "Starting number : "
         pileValue = str(Text.num)
         pileStr = self.font.render(pileStr, True, self.black)
         pileValue = self.font.render(pileValue, True, self.green)
@@ -51,8 +55,8 @@ class Text:
         pileValue = str(Text.pile)
         pileStr = self.font.render(pileStr, True, self.black)
         pileValue = self.font.render(pileValue, True, self.green)
-        window.blit(pileStr,(25, 200))
-        window.blit(pileValue,(250, 200))
+        window.blit(pileStr,(25, 0))
+        window.blit(pileValue,(400, 0))
         pileStr = self.font.render
         pileValue = self.font.render
     
@@ -79,12 +83,19 @@ class Text:
         Text.pile = pile
     
     @staticmethod
-    def computerStatic():
-        Text.computerScore += 1
+    def agentTwoStatic():
+        Text.agentTwoScore += 1
 
     @staticmethod
-    def playerStatic():
-        Text.playerScore += 1
+    def agentOneStatic():
+        Text.agentOneScore += 1
+    
+    @staticmethod
+    def setAgentScore(score1, score2):
+        Text.agentOneScore = score1
+        Text.agentTwoScore = score2
+
+   
        
        
     

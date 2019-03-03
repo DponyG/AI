@@ -1,3 +1,5 @@
+
+
 import math
 
 #  file: node.py
@@ -14,28 +16,42 @@ class Node:
         self.depth = 0
         self.key = 0
         self.parent = None
-
         
+
+    def copy(self, nodeIn):
+        self.children = nodeIn.children
+        self.pile = nodeIn.pile
+        self.miniMax = nodeIn.miniMax
+        self.depth = nodeIn.depth
 
     def getChildren(self):
         return self.children
 
     def printChildren(self):
+        return
         print(self.pile)
     
     #only used for continuing the game
     def setPile(self, number):
         self.pile = [number]
+    
+    def isLeaf(self):
+        for number in self.pile:
+            if number > 2:
+                return False       
+        return True
+
+
         
     
       
 class Tree:  
     def __init__(self, node):
         self.nodeCount = 0
-        self.treeDebth = 0
+        self.treeDepth = 0
         self.removeDuplicates = []
         self.lookUpTable = {}
-        self.lookUpTable2 = []
+        self.lookUpTable2 = {}
         self.generateTree(node)
     
     
@@ -48,7 +64,8 @@ class Tree:
     def generateBranches(self, node):
         tup = tuple(node.pile) #This is because a list is not hashable.
         if tup in self.lookUpTable.keys():
-            node = self.lookUpTable[tup] 
+            node.copy(self.lookUpTable[tup])
+            return True
         else:
             for number in node.pile:
                 count = int(number/2)+1
@@ -59,6 +76,8 @@ class Tree:
                     if checkNum != number:
                         newNode = Node()
                         newNode.depth = node.depth + 1
+                        if self.treeDepth < newNode.depth:
+                            self.treeDepth = newNode.depth
                         newPile.remove(number)
                         newPile.append(newNum)
                         newPile.append(i)
@@ -66,7 +85,8 @@ class Tree:
                         newNode.pile.sort()
                         node.pile.sort()
                         node.children.append(newNode)        
-        #self.lookUpTable[tup] = node
+            self.lookUpTable[tup] = node
+            return False
          
      
     def checkDuplicateNodes(self, parent, child):
@@ -95,13 +115,14 @@ class Tree:
         if not self.isLeafNode(node):
             node.pile.sort() 
             for node in node.children: 
-                self.generateBranches(node)
+                if self.generateBranches(node):
+                    continue
                 self.generateTree(node)       
         else:
             if node.depth % 2 == 0: 
-                node.miniMax = 0
-            else:
                 node.miniMax = 1
+            else:
+                node.miniMax = 0
                 
     def printTable(self):
         for test in self.lookUpTable2:
@@ -122,29 +143,62 @@ class Tree:
         if root.children == []:
             return 0
         return 1 + max(self.depth(child) for child in root.children)
+    
+    def getTreeDepth(self):
+        return self.treeDepth
 
     # def miniMax(self, root, depth)
     # Recursive MiniMax function that cycles
     # up from a leaf node. Alternating between min
     # and max based on the depth of tree 
     def miniMax(self, root, depth):
-      
+        tup = tuple(root.pile)
         if depth == 0:
-            print(root.pile, root.miniMax, depth)
             return root.miniMax
+        if tup in self.lookUpTable2.keys():
+            root.miniMax = self.lookUpTable2[tup]
+            return root.miniMax
+
         if len(root.pile) % 2 == 0: ##Max's turn
             root.miniMax = 0
             for node in root.children:       
-                    eval = self.miniMax(node, depth -1)
-                    root.miniMax = max(root.miniMax, eval)   
-            print(root.pile , root.miniMax, depth )        
+                eval = self.miniMax(node, depth -1)
+                root.miniMax = max(root.miniMax, eval)
+            self.lookUpTable2[tup] = root.miniMax      
             return root.miniMax    
         else:
             root.miniMax = 1 
             for node in root.children:
                 eval = self.miniMax(node, depth -1 )
-                root.miniMax = min(root.miniMax, eval) 
-            print(root.pile , root.miniMax, depth )   
+                root.miniMax = min(root.miniMax, eval)
+            self.lookUpTable2[tup] = root.miniMax 
+            return root.miniMax
+    
+    # def miniMax(self, root, depth)
+    # Recursive MiniMax function that cycles
+    # up from a leaf node. Alternating between min
+    # and max based on the depth of tree 
+    def alphaBeta(self, root, depth, alpha, beta):
+        tup = tuple(root.pile)
+        if depth == 0:
+            return root.miniMax
+        if len(root.pile) % 2 == 0: ##Max's turn
+            root.miniMax = 0
+            for node in root.children:       
+                eval = self.alphaBeta(node, depth -1, alpha, beta)
+                root.miniMax = max(root.miniMax, eval)
+                alpha = max(alpha, root.miniMax)
+                if beta <= alpha:
+                    break
+            return root.miniMax    
+        else:
+            root.miniMax = 1 
+            for node in root.children:
+                eval = self.alphaBeta(node, depth -1, alpha, beta )
+                root.miniMax = min(root.miniMax, eval)
+                beta = min(beta, root.miniMax)
+                if beta <= alpha:
+                    break
             return root.miniMax
 
             

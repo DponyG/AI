@@ -31,7 +31,7 @@ class Button:
             pygame.draw.rect(win, outline, (self.x-2,self.y-2,self.width+4,self.height+4),0)
 
             pygame.draw.rect(win, self.color, (self.x,self.y,self.width,self.height),0)
-            
+                
         if self.text != '': 
             font = pygame.font.SysFont('comicsans', 15) 
             text = font.render(self.text, 1, (0,0,0)) 

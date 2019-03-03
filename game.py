@@ -2,6 +2,8 @@ from node import Node
 from node import Tree
 from text import Text
 from button import Button
+from agent import Max
+from agent import Player
 from gameBoard import GameBoard
 import random
 
@@ -14,40 +16,40 @@ import random
 #  max is the same way, however will choose a 1 if possble.
 
 class Game:
-    def __init__(self, number, width, height):
-      
-        self.text = Text()
-        self.pileNumber = number
-        self.width = width
-        self.height = height
-        self.text = None
-        self.root = None
-        self.tree = None
+    def __init__(self, agent_one, agent_two, node):
+        
+        self.root = node
+        self.agent_one = agent_one
+        self.agent_two = agent_two
         self.currentMove = None
         self.moveStorage = None
-        self.gameBoard = None
-        self.possibleMoves = None
-        self.startGame(self.pileNumber)
+        self.playerMoves = []
+        self.startGame()
    
         
-    def startGame(self, number):
-        print("Starting new Game with one higher number")
-        self.root = Node()
-        self.root.setPile(number)
-        self.tree = Tree(self.root)
-        print("Done Generating Tree")
-        #print(self.tree.printChildren(self.root))
-        self.depth = self.tree.depth(self.root)
-        self.tree.miniMax(self.root, self.depth) ## Give all nodes 0 or 1
+    def startGame(self):
+        self.initiateSenses(self.agent_one)
+        self.initiateSenses(self.agent_two)
         self.moveStorage = []
-        self.gameBoard = GameBoard(self.width, self.height)
-        self.playerVsAiMoveList(self.root)
-        
-    def playerVsAiMoveList(self, node):
+        self.setMoves(self.root, self.agent_one)
+       
+    def setMoves(self, node, agent):
         self.currentMove = node
-        self.changePileText(node)
-        self.possibleMoves = self.gameBoard.createButtonMoves(self.currentMove) ##Creates the moves
-    
+        if agent.type == "Player":
+                self.playerMoves = agent.move(self.currentMove)
+                return self.currentMove
+        if agent.type == "Max":         
+                self.currentMove = agent.move(self.currentMove)
+                return self.currentMove
+        if agent.type == "Min":         
+                self.currentMove = agent.move(self.currentMove)
+                return self.currentMove
+            
+    def initiateSenses(self, agent):
+        if agent.type == "Max":
+            agent.sense(self.root)
+         
+  
     def playerThink(self, node):
         self.currentMove = node
         if self.tree.isLeafNode(self.currentMove):
@@ -120,8 +122,11 @@ class Game:
                     return node
             return random.choice (allMoves)     
 
-    def getMoves (self):
-        return self.possibleMoves
+    def getPlayerMoves (self):
+        return self.playerMoves
+        
+    def getCurrentMove(self):
+        return self.currentMove
 
     def printStorage(self):
         for move in self.moveStorage:
