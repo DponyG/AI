@@ -23,11 +23,11 @@ class Max(Agent):
     def sense(self, root):
         self.root = root
         self.tree = Tree(self.root)
-        print("Done with Tree")
+
         self.depth = self.tree.getTreeDepth()
-        self.tree.miniMax(self.root, self.depth) ## Give all 
+        self.tree.miniMax(self.root, self.depth) 
         #self.tree.alphaBeta(self.root, self.depth, 0, 1) ## Give all 
-        print("Done Alpha Beta")
+      
     
     def think(self, node):
         self.allMoves = node.getChildren()
@@ -45,12 +45,11 @@ class Min(Agent):
         self.type = "Min"
         self.root = None
     
-    def sense(self): pass ## I let Min and Max share the same tree save some time.
+    def sense(self): pass ## I let Min and Max share the same tree to save some time.
     
     def think(self, node):
         self.allMoves = node.getChildren()
         for node in self.allMoves:
-            print(node.miniMax)
             if node.miniMax == 0:
                 return node   
         return random.choice (self.allMoves)  
@@ -70,6 +69,20 @@ class Player(Agent):
     def think(self, node):
         self.possibleMoves = self.gameBoard.createButtonMoves(node) ##Creates the moves
         return self.possibleMoves
+
+    def move(self, node): 
+        return(self.think(node))
+
+class Random(Agent):
+    def __init__(self):
+        self.type = "Random"
+        self.possibleMoves = []
+       
+    def sense(self): pass
+
+    def think(self, node):
+        self.allMoves = node.getChildren()
+        return random.choice (self.allMoves)  
 
     def move(self, node): 
         return(self.think(node))

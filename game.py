@@ -44,6 +44,9 @@ class Game:
         if agent.type == "Min":         
                 self.currentMove = agent.move(self.currentMove)
                 return self.currentMove
+        if agent.type == "Random":         
+                self.currentMove = agent.move(self.currentMove)
+                return self.currentMove
             
     def initiateSenses(self, agent):
         if agent.type == "Max":

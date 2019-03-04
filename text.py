@@ -8,7 +8,7 @@ import pygame
 class Text:
     agentOneScore = 0 # Static Variable used to increment the score
     agentTwoScore = 0
-    num = 5
+    num = 0
     pile = []
     previousPile = []
     def __init__(self):
@@ -72,6 +72,10 @@ class Text:
     
 
 
+    
+    @staticmethod
+    def setNum(num):
+        Text.num = num
     
     @staticmethod
     def incNum():

@@ -55,11 +55,12 @@ class Tree:
         self.generateTree(node)
     
     
-    #def GenerateBranches()
-    #Called recursivley from generateTree.
-    #Takes the old pile and splits it up into a new pile
-    #Count goes to number/2 to prevent recreating nodes
-    #for example it prevents 4 splitting into 1 3 and 3 1
+    #  def GenerateBranches()
+    #  Called recursivley from generateTree.
+    #  Takes the old pile and splits it up into a new pile
+    #  Count goes to number/2 to prevent recreating nodes
+    #  for example it prevents 4 splitting into 1 3 and 3 1
+    #  it the number is in the look up table it wont recalulate it
 
     def generateBranches(self, node):
         tup = tuple(node.pile) #This is because a list is not hashable.
@@ -89,14 +90,7 @@ class Tree:
             return False
          
      
-    def checkDuplicateNodes(self, parent, child):
-        for node in parent.children:
-           # print(node.pile, child.pile)
-            if child.pile == node.pile:
-                print("here")
-                return True          
-        return False
-
+    #  Debugging function to find all the children
     def printChildren(self, node):
         if not self.isLeafNode(node):
             for child in node.children:
@@ -124,10 +118,7 @@ class Tree:
             else:
                 node.miniMax = 0
                 
-    def printTable(self):
-        for test in self.lookUpTable2:
-            print(test.pile)
-                   
+   #  Actually redefined in node but I didn't want to remove it         
     def isLeafNode(self, node):
         for number in node.pile:
             if number > 2:
@@ -174,10 +165,11 @@ class Tree:
             self.lookUpTable2[tup] = root.miniMax 
             return root.miniMax
     
-    # def miniMax(self, root, depth)
-    # Recursive MiniMax function that cycles
-    # up from a leaf node. Alternating between min
-    # and max based on the depth of tree 
+    #  def alphaBeta(self, root, depth, alpha, beta)
+    #  Recursive AlphaBeta function that cycles
+    #  up from a leaf node. Alternating between min
+    #  and max based on the depth of tree slow because
+    #  not using look up table.
     def alphaBeta(self, root, depth, alpha, beta):
         tup = tuple(root.pile)
         if depth == 0:
